@@ -21,6 +21,6 @@ Secrets à créer dans **Settings › Secrets and variables › Actions › Secr
 
 Variables facultatives (onglet **Variables**) :
 - `OVH_FTP_DIR` : dossier distant, `www/` par défaut
-- `OVH_FTP_PROTOCOL` : `ftps` par défaut, mettre `ftp` si la connexion chiffrée est refusée
+- `OVH_FTP_PROTOCOL` : `ftp` par défaut (l'hébergement mutualisé OVH refuse le FTPS)
 
 Sans ces secrets, le workflow ne déploie rien et affiche un avertissement.
