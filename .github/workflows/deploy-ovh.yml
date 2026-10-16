@@ -1,0 +1,48 @@
+name: Déploiement OVH
+
+# Envoie le site sur l'hébergement OVH à chaque push sur main (ou à la main depuis l'onglet Actions).
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-ovh
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Vérifier les identifiants FTP
+        id: check
+        env:
+          SERVER: ${{ secrets.OVH_FTP_SERVER }}
+          USERNAME: ${{ secrets.OVH_FTP_USERNAME }}
+          PASSWORD: ${{ secrets.OVH_FTP_PASSWORD }}
+        run: |
+          if [ -z "$SERVER" ] || [ -z "$USERNAME" ] || [ -z "$PASSWORD" ]; then
+            echo "::warning::Secrets OVH_FTP_SERVER, OVH_FTP_USERNAME et OVH_FTP_PASSWORD manquants : déploiement ignoré."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.check.outputs.ready == 'true'
+
+      - name: Envoyer les fichiers sur OVH
+        if: steps.check.outputs.ready == 'true'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.OVH_FTP_SERVER }}
+          username: ${{ secrets.OVH_FTP_USERNAME }}
+          password: ${{ secrets.OVH_FTP_PASSWORD }}
+          protocol: ${{ vars.OVH_FTP_PROTOCOL || 'ftps' }}
+          server-dir: ${{ vars.OVH_FTP_DIR || 'www/' }}
+          exclude: |
+            **/.git*
+            **/.git*/**
+            .github/**
+            README.md
+            .nojekyll
