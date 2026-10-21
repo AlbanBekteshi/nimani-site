@@ -8,7 +8,8 @@ Site vitrine statique (HTML/CSS/JS) du garage Nimani Group, Bosch Car Service à
 
 ## À configurer
 - `WHATSAPP_NUMBER` dans le `<script>` de `index.html` (format international, chiffres uniquement, ex. `32470123456`)
-- Adresses, horaires, téléphones et e-mail (textes surlignés en jaune, classe `ph`)
+- Adresses, horaires et téléphones (textes surlignés en jaune, classe `ph`)
+- `EMAILS` dans le `<script>` : adresse qui reçoit les demandes de chaque garage
 
 ## Mise en ligne sur OVH
 Chaque push sur `main` envoie le site sur l'hébergement OVH par FTP (workflow `.github/workflows/deploy-ovh.yml`).

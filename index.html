@@ -147,6 +147,8 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 /* Footer */
 footer { background: var(--navy); padding-block: 40px; color: #b8c4d9; font-size: 15px; }
 footer .slogan { color: #ffffff !important; }
+footer .mails a { color: #ffffff; text-decoration: none; }
+footer .mails a:hover { text-decoration: underline; }
 footer .wrap { display: flex; flex-wrap: wrap; gap: 20px 40px; align-items: center; justify-content: space-between; }
 footer .slogan { font-family: var(--f-label); text-transform: uppercase; letter-spacing: .4em; font-size: 14px; color: var(--fg); }
 
@@ -239,7 +241,7 @@ footer .slogan { font-family: var(--f-label); text-transform: uppercase; letter-
     <div class="wrap">
       <p class="eyebrow" data-i18n="bk.eyebrow">Rendez-vous</p>
       <h2 data-i18n="bk.title">Réservez votre passage à l'atelier</h2>
-      <p class="lead" data-i18n="bk.lead">Remplissez le formulaire : votre demande s'ouvre dans WhatsApp, prête à être envoyée. Nous vous confirmons le créneau par retour de message.</p>
+      <p class="lead" data-i18n="bk.lead">Remplissez le formulaire, puis envoyez votre demande au garage choisi par WhatsApp ou par e-mail. Nous vous confirmons le créneau par retour de message.</p>
 
       <div class="book-grid">
         <div>
@@ -304,17 +306,18 @@ footer .slogan { font-family: var(--f-label); text-transform: uppercase; letter-
             </div>
             <p class="err" id="err" hidden data-i18n="f.err">Merci de remplir les champs marqués d'un astérisque.</p>
             <div class="form-foot">
-              <button class="btn btn-wa" type="submit"><svg><use href="#i-wa"/></svg><span data-i18n="f.submit">Envoyer ma demande</span></button>
+              <button class="btn btn-primary" type="submit"><span data-i18n="f.submit">Préparer ma demande</span></button>
               <small data-i18n="f.note">Le rendez-vous est confirmé uniquement après notre réponse.</small>
             </div>
           </form>
 
           <div class="confirm" id="confirm" hidden>
             <h3 data-i18n="c.title">Votre demande est prête</h3>
-            <p data-i18n="c.text">Si WhatsApp ne s'est pas ouvert, appuyez sur le bouton ci-dessous puis envoyez le message.</p>
+            <p><span data-i18n="c.text">Envoyez-la par WhatsApp ou par e-mail au garage choisi :</span> <strong id="mail-to"></strong></p>
             <pre id="preview"></pre>
             <div class="row">
               <a class="btn btn-wa" id="send-link" href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg><span data-i18n="c.open">Ouvrir WhatsApp</span></a>
+              <a class="btn btn-primary" id="mail-link" href="#"><span data-i18n="c.mail">Envoyer par e-mail</span></a>
               <button class="btn btn-ghost" type="button" id="copy" data-i18n="c.copy">Copier le message</button>
               <button class="btn btn-ghost" type="button" id="edit" data-i18n="c.edit">Modifier</button>
             </div>
@@ -328,6 +331,7 @@ footer .slogan { font-family: var(--f-label); text-transform: uppercase; letter-
               <dt data-i18n="l.addr">Adresse</dt><dd class="ph">[Rue et numéro], 1750 Lennik</dd>
               <dt data-i18n="l.hours">Horaires</dt><dd class="hours ph" data-i18n="l.hours.v">[Lun–Ven 08:00–18:00 · Sam 09:00–13:00]</dd>
               <dt data-i18n="l.tel">Tél.</dt><dd class="ph">[+32 2 XXX XX XX]</dd>
+              <dt data-i18n="l.mail">E-mail</dt><dd><a href="mailto:lennik@nimanigroup.be">lennik@nimanigroup.be</a></dd>
             </dl>
             <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Nimani+Group+Lennik" target="_blank" rel="noopener" data-i18n="l.map">Itinéraire →</a>
           </article>
@@ -337,6 +341,7 @@ footer .slogan { font-family: var(--f-label); text-transform: uppercase; letter-
               <dt data-i18n="l.addr">Adresse</dt><dd class="ph">[Rue et numéro], 1070 Anderlecht</dd>
               <dt data-i18n="l.hours">Horaires</dt><dd class="hours ph" data-i18n="l.hours.v">[Lun–Ven 08:00–18:00 · Sam 09:00–13:00]</dd>
               <dt data-i18n="l.tel">Tél.</dt><dd class="ph">[+32 2 XXX XX XX]</dd>
+              <dt data-i18n="l.mail">E-mail</dt><dd><a href="mailto:anderlecht@nimanigroup.be">anderlecht@nimanigroup.be</a></dd>
             </dl>
             <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Nimani+Group+Anderlecht" target="_blank" rel="noopener" data-i18n="l.map">Itinéraire →</a>
           </article>
@@ -350,7 +355,7 @@ footer .slogan { font-family: var(--f-label); text-transform: uppercase; letter-
   <div class="wrap">
     <div>© <span id="year">2026</span> Nimani Group · Automotive Solutions</div>
     <div class="slogan">Driven by trust</div>
-    <div class="ph">[info@nimanigroup.be]</div>
+    <div class="mails"><a href="mailto:lennik@nimanigroup.be">lennik@nimanigroup.be</a> · <a href="mailto:anderlecht@nimanigroup.be">anderlecht@nimanigroup.be</a></div>
   </div>
 </footer>
 
@@ -360,6 +365,8 @@ footer .slogan { font-family: var(--f-label); text-transform: uppercase; letter-
 // ===== À CONFIGURER =====
 // Numéro WhatsApp Business au format international, chiffres uniquement (ex. 32470123456).
 const WHATSAPP_NUMBER = "32000000000";
+// Adresse e-mail qui reçoit les demandes de rendez-vous, par garage.
+const EMAILS = { Lennik: "lennik@nimanigroup.be", Anderlecht: "anderlecht@nimanigroup.be" };
 // ========================
 
 const T = {
@@ -378,21 +385,21 @@ const T = {
     "tr.2.t": "Offerte vooraf", "tr.2.d": "U weet wat er gebeurt en wat het kost voordat we beginnen.",
     "tr.3.t": "Twee adressen", "tr.3.d": "Lennik en Anderlecht: kies de garage die het dichtst bij u ligt.",
     "bk.eyebrow": "Afspraak", "bk.title": "Reserveer uw bezoek aan de werkplaats",
-    "bk.lead": "Vul het formulier in: uw aanvraag opent in WhatsApp, klaar om te versturen. Wij bevestigen het tijdstip per bericht.",
+    "bk.lead": "Vul het formulier in en verstuur uw aanvraag via WhatsApp of per e-mail naar de gekozen garage. Wij bevestigen het tijdstip per bericht.",
     "f.garage": "Garage <span class=\"req\">*</span>", "f.name": "Naam en voornaam", "f.phone": "Telefoon", "f.service": "Dienst",
     "f.choose": "Kiezen…", "o.1": "Onderhoud / nazicht", "o.2": "Mechaniek (herstelling)", "o.3": "Carrosserie", "o.4": "Diagnose / controlelampje", "o.5": "Banden", "o.6": "Airco", "o.7": "Andere",
     "f.car": "Merk en model", "f.date": "Gewenste datum", "f.slot": "Moment van de dag", "s.1": "Voormiddag", "s.2": "Namiddag", "s.3": "Maakt niet uit",
     "f.plate": "Nummerplaat", "f.email": "E-mail", "f.msg": "Beschrijf het probleem of de vraag",
-    "f.err": "Vul de velden met een sterretje in.", "f.submit": "Aanvraag versturen", "f.note": "De afspraak is pas bevestigd na ons antwoord.",
-    "c.title": "Uw aanvraag is klaar", "c.text": "Is WhatsApp niet geopend? Tik op de knop hieronder en verstuur het bericht.",
+    "f.err": "Vul de velden met een sterretje in.", "f.submit": "Aanvraag voorbereiden", "f.note": "De afspraak is pas bevestigd na ons antwoord.",
+    "c.title": "Uw aanvraag is klaar", "c.text": "Verstuur ze via WhatsApp of per e-mail naar de gekozen garage:", "c.mail": "Versturen per e-mail", "mail.subject": "Afspraakaanvraag",
     "c.open": "WhatsApp openen", "c.copy": "Bericht kopiëren", "c.copied": "Gekopieerd", "c.edit": "Wijzigen",
-    "l.addr": "Adres", "l.hours": "Uren", "l.hours.v": "[Ma–Vr 08:00–18:00 · Za 09:00–13:00]", "l.tel": "Tel.", "l.map": "Routebeschrijving →",
+    "l.addr": "Adres", "l.hours": "Uren", "l.hours.v": "[Ma–Vr 08:00–18:00 · Za 09:00–13:00]", "l.tel": "Tel.", "l.mail": "E-mail", "l.map": "Routebeschrijving →",
     "wa.hello": "Hallo Nimani Group, ik wil graag een afspraak maken.",
     "m.garage": "Garage", "m.name": "Naam", "m.phone": "Telefoon", "m.email": "E-mail", "m.service": "Dienst", "m.car": "Wagen", "m.plate": "Nummerplaat", "m.date": "Gewenste datum", "m.msg": "Opmerking"
   },
   fr: {}
 };
-const FR_MSG = { "wa.hello": "Bonjour Nimani Group, je souhaite prendre rendez-vous.", "c.copied": "Copié",
+const FR_MSG = { "wa.hello": "Bonjour Nimani Group, je souhaite prendre rendez-vous.", "c.copied": "Copié", "mail.subject": "Demande de rendez-vous",
   "m.garage": "Garage", "m.name": "Nom", "m.phone": "Téléphone", "m.email": "E-mail", "m.service": "Service", "m.car": "Véhicule", "m.plate": "Plaque", "m.date": "Date souhaitée", "m.msg": "Remarque" };
 
 // Capture the French text already in the page as the FR dictionary.
@@ -453,9 +460,11 @@ form.addEventListener("submit", e => {
   const link = waLink(msg);
   document.getElementById("preview").textContent = msg;
   document.getElementById("send-link").href = link;
+  const mail = EMAILS[d.garage] || EMAILS.Lennik;
+  document.getElementById("mail-to").textContent = mail;
+  document.getElementById("mail-link").href = "mailto:" + mail + "?subject=" + encodeURIComponent(t("mail.subject") + " – " + d.name + " (" + d.car + ")") + "&body=" + encodeURIComponent(msg);
   form.hidden = true; confirmBox.hidden = false;
   confirmBox.scrollIntoView({ block: "nearest" });
-  try { window.open(link, "_blank", "noopener"); } catch (err) {}
 });
 form.addEventListener("input", e => { if (e.target.getAttribute("aria-invalid") === "true" && e.target.value.trim()) e.target.setAttribute("aria-invalid", "false"); });
 document.getElementById("edit").addEventListener("click", () => { confirmBox.hidden = true; form.hidden = false; });
