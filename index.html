@@ -127,6 +127,9 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 .seg input:checked + span { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 18%, var(--bg)); }
 .seg input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
 .form-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 20px; margin-top: 24px; }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.btn[disabled] { opacity: .6; cursor: progress; transform: none; }
+.confirm .sent { color: var(--fg); }
 .form-foot small { color: var(--muted); font-size: 14px; flex: 1 1 220px; }
 .err { color: var(--danger); font-size: 14px; margin: 14px 0 0; }
 .confirm h3 { font-family: var(--f-display); font-weight: 400; font-size: 22px; }
@@ -241,7 +244,7 @@ footer .slogan { font-family: var(--f-label); text-transform: uppercase; letter-
     <div class="wrap">
       <p class="eyebrow" data-i18n="bk.eyebrow">Rendez-vous</p>
       <h2 data-i18n="bk.title">Réservez votre passage à l'atelier</h2>
-      <p class="lead" data-i18n="bk.lead">Remplissez le formulaire, puis envoyez votre demande au garage choisi par WhatsApp ou par e-mail. Nous vous confirmons le créneau par retour de message.</p>
+      <p class="lead" data-i18n="bk.lead">Remplissez le formulaire : votre demande est envoyée directement au garage choisi, ou par WhatsApp si vous préférez. Nous vous confirmons le créneau par retour de message.</p>
 
       <div class="book-grid">
         <div>
@@ -304,22 +307,22 @@ footer .slogan { font-family: var(--f-label); text-transform: uppercase; letter-
                 <textarea id="msg" name="msg"></textarea>
               </div>
             </div>
+            <div class="hp" aria-hidden="true"><label for="website">Website</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
             <p class="err" id="err" hidden data-i18n="f.err">Merci de remplir les champs marqués d'un astérisque.</p>
+            <p class="err" id="send-err" hidden data-i18n="f.senderr">L'envoi a échoué. Réessayez dans un instant ou écrivez-nous sur WhatsApp.</p>
             <div class="form-foot">
-              <button class="btn btn-primary" type="submit"><span data-i18n="f.submit">Préparer ma demande</span></button>
+              <button class="btn btn-primary" type="submit" id="send-btn"><span data-i18n="f.submit">Envoyer la demande</span></button>
+              <button class="btn btn-wa" type="button" id="wa-btn"><svg><use href="#i-wa"/></svg><span data-i18n="f.wa">Via WhatsApp</span></button>
               <small data-i18n="f.note">Le rendez-vous est confirmé uniquement après notre réponse.</small>
             </div>
           </form>
 
           <div class="confirm" id="confirm" hidden>
-            <h3 data-i18n="c.title">Votre demande est prête</h3>
-            <p><span data-i18n="c.text">Envoyez-la par WhatsApp ou par e-mail au garage choisi :</span> <strong id="mail-to"></strong></p>
-            <pre id="preview"></pre>
+            <h3 data-i18n="c.title">Demande envoyée</h3>
+            <p class="sent"><span data-i18n="c.text">Merci ! Votre demande a été envoyée au garage :</span> <strong id="sent-to"></strong></p>
+            <p data-i18n="c.next">Nous vous recontactons rapidement pour confirmer le rendez-vous.</p>
             <div class="row">
-              <a class="btn btn-wa" id="send-link" href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg><span data-i18n="c.open">Ouvrir WhatsApp</span></a>
-              <a class="btn btn-primary" id="mail-link" href="#"><span data-i18n="c.mail">Envoyer par e-mail</span></a>
-              <button class="btn btn-ghost" type="button" id="copy" data-i18n="c.copy">Copier le message</button>
-              <button class="btn btn-ghost" type="button" id="edit" data-i18n="c.edit">Modifier</button>
+              <button class="btn btn-ghost" type="button" id="again" data-i18n="c.again">Nouvelle demande</button>
             </div>
           </div>
         </div>
@@ -365,8 +368,7 @@ footer .slogan { font-family: var(--f-label); text-transform: uppercase; letter-
 // ===== À CONFIGURER =====
 // Numéro WhatsApp Business au format international, chiffres uniquement (ex. 32470123456).
 const WHATSAPP_NUMBER = "32000000000";
-// Adresse e-mail qui reçoit les demandes de rendez-vous, par garage.
-const EMAILS = { Lennik: "lennik@nimanigroup.be", Anderlecht: "anderlecht@nimanigroup.be" };
+// Les adresses de destination de chaque garage sont dans send.php.
 // ========================
 
 const T = {
@@ -385,21 +387,20 @@ const T = {
     "tr.2.t": "Offerte vooraf", "tr.2.d": "U weet wat er gebeurt en wat het kost voordat we beginnen.",
     "tr.3.t": "Twee adressen", "tr.3.d": "Lennik en Anderlecht: kies de garage die het dichtst bij u ligt.",
     "bk.eyebrow": "Afspraak", "bk.title": "Reserveer uw bezoek aan de werkplaats",
-    "bk.lead": "Vul het formulier in en verstuur uw aanvraag via WhatsApp of per e-mail naar de gekozen garage. Wij bevestigen het tijdstip per bericht.",
+    "bk.lead": "Vul het formulier in: uw aanvraag gaat rechtstreeks naar de gekozen garage, of via WhatsApp als u dat verkiest. Wij bevestigen het tijdstip per bericht.",
     "f.garage": "Garage <span class=\"req\">*</span>", "f.name": "Naam en voornaam", "f.phone": "Telefoon", "f.service": "Dienst",
     "f.choose": "Kiezen…", "o.1": "Onderhoud / nazicht", "o.2": "Mechaniek (herstelling)", "o.3": "Carrosserie", "o.4": "Diagnose / controlelampje", "o.5": "Banden", "o.6": "Airco", "o.7": "Andere",
     "f.car": "Merk en model", "f.date": "Gewenste datum", "f.slot": "Moment van de dag", "s.1": "Voormiddag", "s.2": "Namiddag", "s.3": "Maakt niet uit",
     "f.plate": "Nummerplaat", "f.email": "E-mail", "f.msg": "Beschrijf het probleem of de vraag",
-    "f.err": "Vul de velden met een sterretje in.", "f.submit": "Aanvraag voorbereiden", "f.note": "De afspraak is pas bevestigd na ons antwoord.",
-    "c.title": "Uw aanvraag is klaar", "c.text": "Verstuur ze via WhatsApp of per e-mail naar de gekozen garage:", "c.mail": "Versturen per e-mail", "mail.subject": "Afspraakaanvraag",
-    "c.open": "WhatsApp openen", "c.copy": "Bericht kopiëren", "c.copied": "Gekopieerd", "c.edit": "Wijzigen",
+    "f.err": "Vul de velden met een sterretje in.", "f.submit": "Aanvraag versturen", "f.wa": "Via WhatsApp", "f.sending": "Bezig met versturen…", "f.senderr": "Het versturen is mislukt. Probeer het zo meteen opnieuw of stuur ons een WhatsApp.", "f.note": "De afspraak is pas bevestigd na ons antwoord.",
+    "c.title": "Aanvraag verstuurd", "c.text": "Bedankt! Uw aanvraag is verstuurd naar de garage:", "c.next": "Wij nemen snel contact met u op om de afspraak te bevestigen.", "c.again": "Nieuwe aanvraag",
     "l.addr": "Adres", "l.addr.anderlecht": "Ninoofsesteenweg 732, 1070 Anderlecht", "l.hours": "Uren", "l.hours.v": "[Ma–Vr 08:00–18:00 · Za 09:00–13:00]", "l.tel": "Tel.", "l.mail": "E-mail", "l.map": "Routebeschrijving →",
     "wa.hello": "Hallo Nimani Group, ik wil graag een afspraak maken.",
     "m.garage": "Garage", "m.name": "Naam", "m.phone": "Telefoon", "m.email": "E-mail", "m.service": "Dienst", "m.car": "Wagen", "m.plate": "Nummerplaat", "m.date": "Gewenste datum", "m.msg": "Opmerking"
   },
   fr: {}
 };
-const FR_MSG = { "wa.hello": "Bonjour Nimani Group, je souhaite prendre rendez-vous.", "c.copied": "Copié", "mail.subject": "Demande de rendez-vous",
+const FR_MSG = { "wa.hello": "Bonjour Nimani Group, je souhaite prendre rendez-vous.", "f.sending": "Envoi en cours…",
   "m.garage": "Garage", "m.name": "Nom", "m.phone": "Téléphone", "m.email": "E-mail", "m.service": "Service", "m.car": "Véhicule", "m.plate": "Plaque", "m.date": "Date souhaitée", "m.msg": "Remarque" };
 
 // Capture the French text already in the page as the FR dictionary.
@@ -442,8 +443,7 @@ function buildMessage(d) {
   return lines.join("\n");
 }
 
-form.addEventListener("submit", e => {
-  e.preventDefault();
+function readForm() {
   let ok = true;
   form.querySelectorAll("[required]").forEach(el => {
     const bad = !el.value.trim();
@@ -451,31 +451,48 @@ form.addEventListener("submit", e => {
     if (bad) ok = false;
   });
   document.getElementById("err").hidden = ok;
-  if (!ok) { form.querySelector('[aria-invalid="true"]').focus(); return; }
-  const fd = new FormData(form);
-  const d = Object.fromEntries([...fd.entries()].map(([k, v]) => [k, String(v).trim()]));
+  if (!ok) { form.querySelector('[aria-invalid="true"]').focus(); return null; }
+  const d = Object.fromEntries([...new FormData(form).entries()].map(([k, v]) => [k, String(v).trim()]));
   d.service = form.service.options[form.service.selectedIndex].text;
   d.slot = form.slot.options[form.slot.selectedIndex].text;
-  const msg = buildMessage(d);
-  const link = waLink(msg);
-  document.getElementById("preview").textContent = msg;
-  document.getElementById("send-link").href = link;
-  const mail = EMAILS[d.garage] || EMAILS.Lennik;
-  document.getElementById("mail-to").textContent = mail;
-  document.getElementById("mail-link").href = "mailto:" + mail + "?subject=" + encodeURIComponent(t("mail.subject") + " – " + d.name + " (" + d.car + ")") + "&body=" + encodeURIComponent(msg);
-  form.hidden = true; confirmBox.hidden = false;
-  confirmBox.scrollIntoView({ block: "nearest" });
+  return d;
+}
+
+const sendBtn = document.getElementById("send-btn");
+const sendErr = document.getElementById("send-err");
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+  sendErr.hidden = true;
+  const d = readForm();
+  if (!d) return;
+  const body = new FormData(form);
+  body.set("service", d.service);
+  body.set("slot", d.slot);
+  body.set("lang", lang);
+  sendBtn.disabled = true;
+  sendBtn.firstElementChild.textContent = t("f.sending");
+  try {
+    const res = await fetch("send.php", { method: "POST", body });
+    const out = await res.json();
+    if (!res.ok || !out.ok) throw new Error(out.error || res.status);
+    document.getElementById("sent-to").textContent = d.garage;
+    form.hidden = true; confirmBox.hidden = false;
+    confirmBox.scrollIntoView({ block: "nearest" });
+    form.reset();
+  } catch (err) {
+    sendErr.hidden = false;
+  } finally {
+    sendBtn.disabled = false;
+    sendBtn.firstElementChild.textContent = t("f.submit");
+  }
+});
+document.getElementById("wa-btn").addEventListener("click", () => {
+  const d = readForm();
+  if (!d) return;
+  window.open(waLink(buildMessage(d)), "_blank", "noopener");
 });
 form.addEventListener("input", e => { if (e.target.getAttribute("aria-invalid") === "true" && e.target.value.trim()) e.target.setAttribute("aria-invalid", "false"); });
-document.getElementById("edit").addEventListener("click", () => { confirmBox.hidden = true; form.hidden = false; });
-document.getElementById("copy").addEventListener("click", e => {
-  const btn = e.currentTarget, text = document.getElementById("preview").textContent;
-  const done = () => { btn.textContent = t("c.copied"); setTimeout(() => { btn.textContent = t("c.copy"); }, 1800); };
-  try {
-    navigator.clipboard.writeText(text).then(done, () => { selectPreview(); });
-  } catch (err) { selectPreview(); }
-});
-function selectPreview() { const r = document.createRange(); r.selectNodeContents(document.getElementById("preview")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+document.getElementById("again").addEventListener("click", () => { confirmBox.hidden = true; form.hidden = false; });
 
 setLang(lang);
 </script>
