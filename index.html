@@ -10,32 +10,33 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Michroma&family=Barlow:wght@400;500;600;700&family=Barlow+Semi+Condensed:wght@500;600&display=swap">
 <style>
-/* Layout: bright showroom white, sticky bar, split hero with the logo panel, services grid, booking form beside the two locations */
+/* Layout: carbon-fibre dark like the business card, sticky bar, split hero with the logo panel, services grid, booking form beside the two locations */
 :root {
-  --bg: #ffffff;
-  --surface: #f3f6fb;
-  --surface-2: #e8f0fc;
-  --line: #dbe3ef;
-  --fg: #0b1a33;
-  --muted: #55657f;
-  --accent: #0a6fe0;
-  --accent-deep: #0757b3;
-  --navy: #0b1a33;
-  --ph: #9a5b00;
-  --ph-bg: #fff4dc;
-  --shadow: rgba(11, 26, 51, .12);
+  --bg: #0b0e13;
+  --surface: #11161e;
+  --surface-2: #16202d;
+  --line: #222b38;
+  --fg: #eef2f7;
+  --muted: #98a3b3;
+  --accent: #2f8cff;
+  --accent-deep: #1a6fe0;
+  --navy: #07090d;
+  --ph: #ffd27a;
+  --ph-bg: rgba(255, 210, 122, .12);
+  --shadow: rgba(0, 0, 0, .55);
   --wa: #25d366;
   --wa-ink: #05290f;
-  --danger: #d13434;
+  --danger: #ff7a7a;
+  --carbon: repeating-conic-gradient(from 45deg, rgba(255,255,255,.028) 0 25%, transparent 0 50%) 0 0 / 6px 6px;
   --f-display: "Michroma", "Eurostile", "Arial Black", sans-serif;
   --f-body: "Barlow", "Segoe UI", system-ui, sans-serif;
   --f-label: "Barlow Semi Condensed", "Arial Narrow", sans-serif;
-  color-scheme: light;
+  color-scheme: dark;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
-body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--f-body); font-size: 17px; line-height: 1.6; }
+body { margin: 0; background: var(--carbon), var(--bg); color: var(--fg); font-family: var(--f-body); font-size: 17px; line-height: 1.6; }
 a { color: var(--accent); }
 img { max-width: 100%; display: block; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
@@ -51,7 +52,9 @@ section { padding-block: clamp(56px, 9vw, 104px); }
 /* Header */
 .bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
 .bar .wrap { display: flex; align-items: center; gap: 20px; min-height: 68px; }
-.brand img { height: 34px; width: auto; }
+.brand { text-decoration: none; font-family: var(--f-display); font-size: 17px; letter-spacing: .32em; color: var(--fg); white-space: nowrap; }
+.brand b { font-weight: 400; color: var(--accent); }
+@media (max-width: 420px) { .brand { font-size: 14px; letter-spacing: .22em; } }
 .nav { display: flex; gap: 24px; margin-left: auto; }
 .nav a { color: var(--fg); text-decoration: none; font-family: var(--f-label); font-weight: 600; text-transform: uppercase; letter-spacing: .12em; font-size: 14px; opacity: .85; }
 .nav a:hover { opacity: 1; color: var(--accent); }
@@ -73,7 +76,7 @@ section { padding-block: clamp(56px, 9vw, 104px); }
 @media (max-width: 520px) { .bar .btn span { display: none; } .bar .btn { padding: 9px; } }
 
 /* Hero */
-.hero { position: relative; overflow: hidden; padding-block: clamp(40px, 7vw, 88px); background: radial-gradient(70% 80% at 90% 0%, var(--surface-2), transparent 70%), var(--bg); }
+.hero { position: relative; overflow: hidden; padding-block: clamp(40px, 7vw, 88px); background: radial-gradient(60% 80% at 95% 100%, rgba(47,140,255,.18), transparent 70%), var(--carbon), var(--bg); }
 .hero .wrap { display: grid; grid-template-columns: 1.15fr .85fr; gap: clamp(28px, 5vw, 64px); align-items: center; }
 .hero h1 { font-family: var(--f-display); font-weight: 400; font-size: clamp(30px, 4.8vw, 54px); line-height: 1.12; letter-spacing: .01em; }
 .hero h1 em { font-style: normal; color: var(--accent); }
@@ -86,9 +89,9 @@ section { padding-block: clamp(56px, 9vw, 104px); }
 @media (max-width: 860px) { .hero .wrap { grid-template-columns: 1fr; } .logo-panel { justify-self: center; max-width: 380px; } }
 
 /* Services */
-.services { background: var(--surface); border-block: 1px solid var(--line); }
+.services { background: var(--carbon), var(--surface); border-block: 1px solid var(--line); }
 .svc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; margin-top: 40px; }
-.svc { background: var(--bg); padding: 28px 24px 30px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.svc { background: var(--surface); padding: 28px 24px 30px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
 .svc svg { width: 36px; height: 36px; color: var(--accent); }
 .svc h3 { font-family: var(--f-label); text-transform: uppercase; letter-spacing: .1em; font-size: 20px; font-weight: 600; margin-top: 8px; }
 .svc .alt { font-family: var(--f-label); text-transform: uppercase; letter-spacing: .1em; font-size: 13px; color: var(--accent); margin-top: -8px; }
@@ -108,14 +111,14 @@ section { padding-block: clamp(56px, 9vw, 104px); }
 /* Booking */
 .book-grid { display: grid; grid-template-columns: 1.35fr 1fr; gap: clamp(24px, 4vw, 48px); margin-top: 40px; align-items: start; }
 @media (max-width: 960px) { .book-grid { grid-template-columns: 1fr; } }
-form, .confirm { background: var(--bg); box-shadow: 0 20px 50px -30px var(--shadow); border: 1px solid var(--line); border-radius: 14px; padding: clamp(20px, 3vw, 32px); min-width: 0; }
+form, .confirm { background: var(--surface); box-shadow: 0 20px 50px -30px var(--shadow); border: 1px solid var(--line); border-radius: 14px; padding: clamp(20px, 3vw, 32px); min-width: 0; }
 .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
 .field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 .field.full { grid-column: 1 / -1; }
 @media (max-width: 560px) { .fields { grid-template-columns: 1fr; } }
 label, legend { font-family: var(--f-label); text-transform: uppercase; letter-spacing: .1em; font-size: 13px; font-weight: 600; color: var(--muted); }
 label .req { color: var(--accent); }
-input, select, textarea { font: 400 16px var(--f-body); color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; width: 100%; min-width: 0; }
+input, select, textarea { font: 400 16px var(--f-body); color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; width: 100%; min-width: 0; }
 input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent); }
 input[aria-invalid="true"], select[aria-invalid="true"] { border-color: var(--danger); }
 textarea { min-height: 96px; resize: vertical; }
@@ -123,7 +126,7 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 .seg { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
 .seg label { position: relative; cursor: pointer; text-transform: none; letter-spacing: 0; font: 500 16px var(--f-body); color: var(--fg); }
 .seg input { position: absolute; opacity: 0; pointer-events: none; }
-.seg span { display: inline-block; padding: 10px 18px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+.seg span { display: inline-block; padding: 10px 18px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); }
 .seg input:checked + span { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 18%, var(--bg)); }
 .seg input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
 .form-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 20px; margin-top: 24px; }
@@ -134,21 +137,24 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 .err { color: var(--danger); font-size: 14px; margin: 14px 0 0; }
 .confirm h3 { font-family: var(--f-display); font-weight: 400; font-size: 22px; }
 .confirm p { color: var(--muted); }
-.confirm pre { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 14px; white-space: pre-wrap; word-break: break-word; font: 14px/1.55 ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--fg); margin: 16px 0; }
+.confirm pre { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 14px; white-space: pre-wrap; word-break: break-word; font: 14px/1.55 ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--fg); margin: 16px 0; }
 .confirm .row { display: flex; flex-wrap: wrap; gap: 10px; }
 
 .loc-list { display: flex; flex-direction: column; gap: 16px; }
-.loc { border: 1px solid var(--line); border-radius: 12px; padding: 22px 22px 20px; background: linear-gradient(160deg, var(--surface-2), var(--bg) 70%); min-width: 0; }
+.loc { border: 1px solid var(--line); border-radius: 12px; padding: 22px 22px 20px; background: linear-gradient(160deg, var(--surface-2), var(--surface) 70%); min-width: 0; }
 .loc h3 { font-family: var(--f-display); font-weight: 400; font-size: 18px; letter-spacing: .14em; text-transform: uppercase; }
 .loc dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; margin: 14px 0 0; font-size: 15.5px; }
 .loc dt { font-family: var(--f-label); text-transform: uppercase; letter-spacing: .1em; font-size: 12.5px; color: var(--muted); padding-top: 3px; }
 .loc dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
 .loc .hours { font-variant-numeric: tabular-nums; }
+.loc h3 { color: var(--accent); }
+.loc .tel a { color: var(--fg); text-decoration: none; font-size: 20px; letter-spacing: .06em; font-variant-numeric: tabular-nums; }
+.loc .tel a:hover { color: var(--accent); }
 .ph { color: var(--ph); background: var(--ph-bg); border-radius: 4px; padding-inline: 4px; }
 .loc a.map { display: inline-block; margin-top: 14px; font-weight: 600; text-decoration: none; }
 
 /* Footer */
-footer { background: var(--navy); padding-block: 40px; color: #b8c4d9; font-size: 15px; }
+footer { background: var(--navy); border-top: 1px solid var(--line); box-shadow: inset 0 2px 0 -1px var(--accent); padding-block: 40px; color: var(--muted); font-size: 15px; }
 footer .slogan { color: #ffffff !important; }
 footer .mails a { color: #ffffff; text-decoration: none; }
 footer .mails a:hover { text-decoration: underline; }
@@ -168,7 +174,7 @@ footer .slogan { font-family: var(--f-label); text-transform: uppercase; letter-
 
 <header class="bar">
   <div class="wrap">
-    <a class="brand" href="#top" aria-label="Nimani Group"><img src="logo-header.png" alt="Nimani Group" width="780" height="180"></a>
+    <a class="brand" href="#top" aria-label="Nimani Group">NIMANI <b>GROUP</b></a>
     <nav class="nav" aria-label="Navigation">
       <a href="#services" data-i18n="nav.services">Services</a>
       <a href="#garages" data-i18n="nav.garages">Nos garages</a>
@@ -212,8 +218,8 @@ footer .slogan { font-family: var(--f-label); text-transform: uppercase; letter-
         </article>
         <article class="svc">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 15.5V13l2.2-4.4A2 2 0 0 1 7 7.5h8.6a2 2 0 0 1 1.6.8L20 12l1 1.2v2.3"/><path d="M3 15.5h18"/><circle cx="7" cy="16.5" r="2"/><circle cx="17" cy="16.5" r="2"/><path d="M8 4l1.5 2M14 3.5 13.5 6M19 5l-2 2"/></svg>
-          <h3 data-i18n="svc.2.t">Carrosserie</h3>
-          <div class="alt" data-i18n="svc.2.a">Carrosserie</div>
+          <h3 data-i18n="svc.2.t">Carrosserie agréée</h3>
+          <div class="alt" data-i18n="svc.2.a">Erkende carrosserie</div>
           <p data-i18n="svc.2.d">Débosselage, peinture, remplacement de pare-chocs et de vitrages, suivi des dossiers d'assurance.</p>
         </article>
         <article class="svc">
@@ -223,10 +229,10 @@ footer .slogan { font-family: var(--f-label); text-transform: uppercase; letter-
           <p data-i18n="svc.3.d">Lecture électronique des défauts, voyants allumés, contrôle avant achat et avant le contrôle technique.</p>
         </article>
         <article class="svc">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/><path d="M12 3v6.5M12 14.5V21M3.5 9.5l6.1 1.7M14.4 12.8l6.1 1.7M5.5 18.5l4.6-4.6M13.9 10.1l4.6-4.6"/></svg>
-          <h3 data-i18n="svc.4.t">Toutes marques</h3>
-          <div class="alt" data-i18n="svc.4.a">Alle merken</div>
-          <p data-i18n="svc.4.d">Européennes, asiatiques ou américaines, thermiques, hybrides ou électriques : nous prenons en charge votre véhicule.</p>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 5 13h6l-1 9 8-11h-6l1-9Z"/></svg>
+          <h3 data-i18n="svc.4.t">Véhicules électriques</h3>
+          <div class="alt" data-i18n="svc.4.a">Elektrische voertuigen</div>
+          <p data-i18n="svc.4.d">Entretien et réparation des voitures électriques et hybrides, pour toutes les marques.</p>
         </article>
       </div>
     </div>
@@ -271,8 +277,9 @@ footer .slogan { font-family: var(--f-label); text-transform: uppercase; letter-
                   <option value="" data-i18n="f.choose">Choisir…</option>
                   <option data-i18n="o.1">Entretien / révision</option>
                   <option data-i18n="o.2">Mécanique (réparation)</option>
-                  <option data-i18n="o.3">Carrosserie</option>
+                  <option data-i18n="o.3">Carrosserie agréée</option>
                   <option data-i18n="o.4">Diagnostic / voyant allumé</option>
+                  <option data-i18n="o.8">Véhicule électrique / hybride</option>
                   <option data-i18n="o.5">Pneus</option>
                   <option data-i18n="o.6">Climatisation</option>
                   <option data-i18n="o.7">Autre</option>
@@ -332,8 +339,8 @@ footer .slogan { font-family: var(--f-label); text-transform: uppercase; letter-
             <h3>Lennik</h3>
             <dl>
               <dt data-i18n="l.addr">Adresse</dt><dd>Ninoofsesteenweg 42, 1750 Lennik</dd>
-              <dt data-i18n="l.hours">Horaires</dt><dd class="hours ph" data-i18n="l.hours.v">[Lun–Ven 08:00–18:00 · Sam 09:00–13:00]</dd>
-              <dt data-i18n="l.tel">Tél.</dt><dd class="ph">[+32 2 XXX XX XX]</dd>
+              <dt data-i18n="l.hours">Horaires</dt><dd class="hours" data-i18n="l.hours.v">Lun–Ven 8h00–18h30<br>Sam 9h00–14h00</dd>
+              <dt data-i18n="l.tel">Tél.</dt><dd class="tel"><a href="tel:+3223036960">02 303 69 60</a></dd>
               <dt data-i18n="l.mail">E-mail</dt><dd><a href="mailto:lennik@nimanigroup.be">lennik@nimanigroup.be</a></dd>
             </dl>
             <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Ninoofsesteenweg+42%2C+1750+Lennik" target="_blank" rel="noopener" data-i18n="l.map">Itinéraire →</a>
@@ -342,8 +349,8 @@ footer .slogan { font-family: var(--f-label); text-transform: uppercase; letter-
             <h3>Anderlecht</h3>
             <dl>
               <dt data-i18n="l.addr">Adresse</dt><dd data-i18n="l.addr.anderlecht">Chaussée de Ninove 732, 1070 Anderlecht</dd>
-              <dt data-i18n="l.hours">Horaires</dt><dd class="hours ph" data-i18n="l.hours.v">[Lun–Ven 08:00–18:00 · Sam 09:00–13:00]</dd>
-              <dt data-i18n="l.tel">Tél.</dt><dd class="ph">[+32 2 XXX XX XX]</dd>
+              <dt data-i18n="l.hours">Horaires</dt><dd class="hours" data-i18n="l.hours.v">Lun–Ven 8h00–18h30<br>Sam 9h00–14h00</dd>
+              <dt data-i18n="l.tel">Tél.</dt><dd class="tel"><a href="tel:+3225234780">02 523 47 80</a></dd>
               <dt data-i18n="l.mail">E-mail</dt><dd><a href="mailto:anderlecht@nimanigroup.be">anderlecht@nimanigroup.be</a></dd>
             </dl>
             <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Ninoofsesteenweg+732%2C+1070+Anderlecht" target="_blank" rel="noopener" data-i18n="l.map">Itinéraire →</a>
@@ -380,21 +387,21 @@ const T = {
     "hero.cta": "Afspraak maken", "hero.wa": "Stuur ons een WhatsApp",
     "svc.eyebrow": "Onze diensten", "svc.title": "Eén werkplaats voor uw hele wagen",
     "svc.1.t": "Mechaniek", "svc.1.a": "Mécanique", "svc.1.d": "Onderhoud en nazicht, remmen, koppeling, distributie, ophanging, airco.",
-    "svc.2.t": "Carrosserie", "svc.2.a": "Carrosserie", "svc.2.d": "Uitdeuken, lakwerk, vervanging van bumpers en ruiten, opvolging van verzekeringsdossiers.",
+    "svc.2.t": "Erkende carrosserie", "svc.2.a": "Carrosserie agréée", "svc.2.d": "Uitdeuken, lakwerk, vervanging van bumpers en ruiten, opvolging van verzekeringsdossiers.",
     "svc.3.t": "Diagnose", "svc.3.a": "Diagnostic", "svc.3.d": "Elektronisch uitlezen van fouten, brandende controlelampjes, controle voor aankoop en voor de keuring.",
-    "svc.4.t": "Alle merken", "svc.4.a": "Toutes marques", "svc.4.d": "Europees, Aziatisch of Amerikaans, benzine, diesel, hybride of elektrisch: wij nemen uw wagen onder handen.",
+    "svc.4.t": "Elektrische voertuigen", "svc.4.a": "Véhicules électriques", "svc.4.d": "Onderhoud en herstelling van elektrische en hybride wagens, voor alle merken.",
     "tr.1.t": "Bosch Car Service-netwerk", "tr.1.d": "Diagnoseapparatuur en onderdelen van originele kwaliteit.",
     "tr.2.t": "Offerte vooraf", "tr.2.d": "U weet wat er gebeurt en wat het kost voordat we beginnen.",
     "tr.3.t": "Twee adressen", "tr.3.d": "Lennik en Anderlecht: kies de garage die het dichtst bij u ligt.",
     "bk.eyebrow": "Afspraak", "bk.title": "Reserveer uw bezoek aan de werkplaats",
     "bk.lead": "Vul het formulier in: uw aanvraag gaat rechtstreeks naar de gekozen garage, of via WhatsApp als u dat verkiest. Wij bevestigen het tijdstip per bericht.",
     "f.garage": "Garage <span class=\"req\">*</span>", "f.name": "Naam en voornaam", "f.phone": "Telefoon", "f.service": "Dienst",
-    "f.choose": "Kiezen…", "o.1": "Onderhoud / nazicht", "o.2": "Mechaniek (herstelling)", "o.3": "Carrosserie", "o.4": "Diagnose / controlelampje", "o.5": "Banden", "o.6": "Airco", "o.7": "Andere",
+    "f.choose": "Kiezen…", "o.1": "Onderhoud / nazicht", "o.2": "Mechaniek (herstelling)", "o.3": "Erkende carrosserie", "o.4": "Diagnose / controlelampje", "o.8": "Elektrische / hybride wagen", "o.5": "Banden", "o.6": "Airco", "o.7": "Andere",
     "f.car": "Merk en model", "f.date": "Gewenste datum", "f.slot": "Moment van de dag", "s.1": "Voormiddag", "s.2": "Namiddag", "s.3": "Maakt niet uit",
     "f.plate": "Nummerplaat", "f.email": "E-mail", "f.msg": "Beschrijf het probleem of de vraag",
     "f.err": "Vul de velden met een sterretje in.", "f.submit": "Aanvraag versturen", "f.wa": "Via WhatsApp", "f.sending": "Bezig met versturen…", "f.senderr": "Het versturen is mislukt. Probeer het zo meteen opnieuw of stuur ons een WhatsApp.", "f.note": "De afspraak is pas bevestigd na ons antwoord.",
     "c.title": "Aanvraag verstuurd", "c.text": "Bedankt! Uw aanvraag is verstuurd naar de garage:", "c.next": "Wij nemen snel contact met u op om de afspraak te bevestigen.", "c.again": "Nieuwe aanvraag",
-    "l.addr": "Adres", "l.addr.anderlecht": "Ninoofsesteenweg 732, 1070 Anderlecht", "l.hours": "Uren", "l.hours.v": "[Ma–Vr 08:00–18:00 · Za 09:00–13:00]", "l.tel": "Tel.", "l.mail": "E-mail", "l.map": "Routebeschrijving →",
+    "l.addr": "Adres", "l.addr.anderlecht": "Ninoofsesteenweg 732, 1070 Anderlecht", "l.hours": "Uren", "l.hours.v": "Ma–Vr 8u00–18u30<br>Za 9u00–14u00", "l.tel": "Tel.", "l.mail": "E-mail", "l.map": "Routebeschrijving →",
     "wa.hello": "Hallo Nimani Group, ik wil graag een afspraak maken.",
     "m.garage": "Garage", "m.name": "Naam", "m.phone": "Telefoon", "m.email": "E-mail", "m.service": "Dienst", "m.car": "Wagen", "m.plate": "Nummerplaat", "m.date": "Gewenste datum", "m.msg": "Opmerking"
   },
