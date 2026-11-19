@@ -164,6 +164,14 @@ footer .slogan { font-family: var(--f-label); text-transform: uppercase; letter-
 /* Floating WhatsApp */
 .wa-float { position: fixed; right: 18px; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); z-index: 30; width: 58px; height: 58px; border-radius: 50%; background: var(--wa); color: var(--wa-ink); display: grid; place-items: center; box-shadow: 0 10px 30px -8px var(--shadow), 0 0 0 4px color-mix(in srgb, var(--wa) 25%, transparent); }
 .wa-float svg { width: 30px; height: 30px; }
+.loc .wa-link { display: inline-flex; align-items: center; gap: 8px; color: var(--wa); font-weight: 600; text-decoration: none; }
+.loc .wa-link svg { width: 18px; height: 18px; }
+.loc .wa-link:hover { text-decoration: underline; }
+#wa-pick { background: var(--surface); color: var(--fg); border: 1px solid var(--line); border-radius: 14px; padding: 24px; width: min(360px, calc(100vw - 32px)); box-shadow: 0 20px 50px -20px var(--shadow); }
+#wa-pick::backdrop { background: rgba(0,0,0,.6); }
+#wa-pick p { margin: 0 0 16px; font-weight: 600; font-size: 17px; }
+.wa-pick-list { display: grid; gap: 10px; margin-bottom: 12px; }
+#wa-pick .btn-ghost { width: 100%; }
 </style>
 </head>
 <body>
@@ -184,7 +192,7 @@ footer .slogan { font-family: var(--f-label); text-transform: uppercase; letter-
       <button type="button" data-lang="fr" aria-pressed="true">FR</button>
       <button type="button" data-lang="nl" aria-pressed="false">NL</button>
     </div>
-    <a class="btn btn-wa js-wa" href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg><span>WhatsApp</span></a>
+    <a class="btn btn-wa js-wa-pick" href="#garages"><svg><use href="#i-wa"/></svg><span>WhatsApp</span></a>
   </div>
 </header>
 
@@ -197,7 +205,7 @@ footer .slogan { font-family: var(--f-label); text-transform: uppercase; letter-
         <p class="lead" data-i18n="hero.lead">Mécanique, carrosserie et diagnostic pour toutes les marques. Un atelier Bosch Car Service, des devis clairs et un suivi direct sur WhatsApp.</p>
         <div class="actions">
           <a class="btn btn-primary" href="#rdv" data-i18n="hero.cta">Prendre rendez-vous</a>
-          <a class="btn btn-wa js-wa" href="#" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg><span data-i18n="hero.wa">Écrire sur WhatsApp</span></a>
+          <a class="btn btn-wa js-wa-pick" href="#garages"><svg><use href="#i-wa"/></svg><span data-i18n="hero.wa">Écrire sur WhatsApp</span></a>
         </div>
         <div class="cities"><span>Lennik</span><span>Anderlecht</span></div>
       </div>
@@ -341,6 +349,7 @@ footer .slogan { font-family: var(--f-label); text-transform: uppercase; letter-
               <dt data-i18n="l.addr">Adresse</dt><dd>Ninoofsesteenweg 42, 1750 Lennik</dd>
               <dt data-i18n="l.hours">Horaires</dt><dd class="hours" data-i18n="l.hours.v">Lun–Ven 8h00–18h30<br>Sam 9h00–14h00</dd>
               <dt data-i18n="l.tel">Tél.</dt><dd class="tel"><a href="tel:+3223036960">02 303 69 60</a></dd>
+              <dt>WhatsApp</dt><dd><a class="wa-link js-wa" data-garage="Lennik" href="https://wa.me/3223036960" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg><span data-i18n="l.wa">Écrire sur WhatsApp</span></a></dd>
               <dt data-i18n="l.mail">E-mail</dt><dd><a href="mailto:lennik@nimanigroup.be">lennik@nimanigroup.be</a></dd>
             </dl>
             <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Ninoofsesteenweg+42%2C+1750+Lennik" target="_blank" rel="noopener" data-i18n="l.map">Itinéraire →</a>
@@ -351,6 +360,7 @@ footer .slogan { font-family: var(--f-label); text-transform: uppercase; letter-
               <dt data-i18n="l.addr">Adresse</dt><dd data-i18n="l.addr.anderlecht">Chaussée de Ninove 732, 1070 Anderlecht</dd>
               <dt data-i18n="l.hours">Horaires</dt><dd class="hours" data-i18n="l.hours.v">Lun–Ven 8h00–18h30<br>Sam 9h00–14h00</dd>
               <dt data-i18n="l.tel">Tél.</dt><dd class="tel"><a href="tel:+3225234780">02 523 47 80</a></dd>
+              <dt>WhatsApp</dt><dd><a class="wa-link js-wa" data-garage="Anderlecht" href="https://wa.me/3225234780" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg><span data-i18n="l.wa">Écrire sur WhatsApp</span></a></dd>
               <dt data-i18n="l.mail">E-mail</dt><dd><a href="mailto:anderlecht@nimanigroup.be">anderlecht@nimanigroup.be</a></dd>
             </dl>
             <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Ninoofsesteenweg+732%2C+1070+Anderlecht" target="_blank" rel="noopener" data-i18n="l.map">Itinéraire →</a>
@@ -369,12 +379,21 @@ footer .slogan { font-family: var(--f-label); text-transform: uppercase; letter-
   </div>
 </footer>
 
-<a class="wa-float js-wa" href="#" target="_blank" rel="noopener" aria-label="WhatsApp"><svg><use href="#i-wa"/></svg></a>
+<dialog id="wa-pick" aria-labelledby="wa-pick-t">
+  <p id="wa-pick-t" data-i18n="wp.title">Quel garage souhaitez-vous contacter ?</p>
+  <div class="wa-pick-list">
+    <a class="btn btn-wa js-wa" data-garage="Lennik" href="https://wa.me/3223036960" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg><span>Lennik</span></a>
+    <a class="btn btn-wa js-wa" data-garage="Anderlecht" href="https://wa.me/3225234780" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg><span>Anderlecht</span></a>
+  </div>
+  <button type="button" class="btn btn-ghost" id="wa-pick-close" data-i18n="wp.close">Fermer</button>
+</dialog>
+
+<a class="wa-float js-wa-pick" href="#garages" aria-label="WhatsApp"><svg><use href="#i-wa"/></svg></a>
 
 <script>
 // ===== À CONFIGURER =====
-// Numéro WhatsApp Business au format international, chiffres uniquement (ex. 32470123456).
-const WHATSAPP_NUMBER = "32000000000";
+// Numéro WhatsApp Business de chaque garage, format international, chiffres uniquement.
+const WHATSAPP = { Lennik: "3223036960", Anderlecht: "3225234780" };
 // Les adresses de destination de chaque garage sont dans send.php.
 // ========================
 
@@ -401,7 +420,8 @@ const T = {
     "f.plate": "Nummerplaat", "f.email": "E-mail", "f.msg": "Beschrijf het probleem of de vraag",
     "f.err": "Vul de velden met een sterretje in.", "f.submit": "Aanvraag versturen", "f.wa": "Via WhatsApp", "f.sending": "Bezig met versturen…", "f.senderr": "Het versturen is mislukt. Probeer het zo meteen opnieuw of stuur ons een WhatsApp.", "f.note": "De afspraak is pas bevestigd na ons antwoord.",
     "c.title": "Aanvraag verstuurd", "c.text": "Bedankt! Uw aanvraag is verstuurd naar de garage:", "c.next": "Wij nemen snel contact met u op om de afspraak te bevestigen.", "c.again": "Nieuwe aanvraag",
-    "l.addr": "Adres", "l.addr.anderlecht": "Ninoofsesteenweg 732, 1070 Anderlecht", "l.hours": "Uren", "l.hours.v": "Ma–Vr 8u00–18u30<br>Za 9u00–14u00", "l.tel": "Tel.", "l.mail": "E-mail", "l.map": "Routebeschrijving →",
+    "l.addr": "Adres", "l.addr.anderlecht": "Ninoofsesteenweg 732, 1070 Anderlecht", "l.hours": "Uren", "l.hours.v": "Ma–Vr 8u00–18u30<br>Za 9u00–14u00", "l.tel": "Tel.", "l.mail": "E-mail", "l.map": "Routebeschrijving →", "l.wa": "Stuur een WhatsApp",
+    "wp.title": "Welke garage wilt u contacteren?", "wp.close": "Sluiten",
     "wa.hello": "Hallo Nimani Group, ik wil graag een afspraak maken.",
     "m.garage": "Garage", "m.name": "Naam", "m.phone": "Telefoon", "m.email": "E-mail", "m.service": "Dienst", "m.car": "Wagen", "m.plate": "Nummerplaat", "m.date": "Gewenste datum", "m.msg": "Opmerking"
   },
@@ -425,12 +445,21 @@ function setLang(l) {
   document.querySelectorAll("[data-i18n]").forEach(el => { el.innerHTML = t(el.dataset.i18n); });
   document.querySelectorAll("[data-i18n-html]").forEach(el => { el.innerHTML = t(el.dataset.i18nHtml); });
   document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === l)));
-  document.querySelectorAll(".js-wa").forEach(a => { a.href = waLink(t("wa.hello")); });
+  document.querySelectorAll(".js-wa").forEach(a => { a.href = waLink(a.dataset.garage, t("wa.hello")); });
   try { localStorage.setItem("nimani-lang", l); } catch (e) {}
 }
 document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click", () => setLang(b.dataset.lang)));
 
-function waLink(text) { return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(text); }
+function waLink(garage, text) { return "https://wa.me/" + (WHATSAPP[garage] || WHATSAPP.Lennik) + "?text=" + encodeURIComponent(text); }
+
+// Boutons WhatsApp génériques : choisir le garage.
+const waPick = document.getElementById("wa-pick");
+if (waPick && typeof waPick.showModal === "function") {
+  document.querySelectorAll(".js-wa-pick").forEach(a => a.addEventListener("click", e => { e.preventDefault(); waPick.showModal(); }));
+  waPick.querySelectorAll(".js-wa").forEach(a => a.addEventListener("click", () => waPick.close()));
+  document.getElementById("wa-pick-close").addEventListener("click", () => waPick.close());
+  waPick.addEventListener("click", e => { if (e.target === waPick) waPick.close(); });
+}
 
 // Form
 const form = document.getElementById("book");
@@ -496,7 +525,7 @@ form.addEventListener("submit", async e => {
 document.getElementById("wa-btn").addEventListener("click", () => {
   const d = readForm();
   if (!d) return;
-  window.open(waLink(buildMessage(d)), "_blank", "noopener");
+  window.open(waLink(d.garage, buildMessage(d)), "_blank", "noopener");
 });
 form.addEventListener("input", e => { if (e.target.getAttribute("aria-invalid") === "true" && e.target.value.trim()) e.target.setAttribute("aria-invalid", "false"); });
 document.getElementById("again").addEventListener("click", () => { confirmBox.hidden = true; form.hidden = false; });

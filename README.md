@@ -7,7 +7,7 @@ Site vitrine statique (HTML/CSS/JS) du garage Nimani Group, Bosch Car Service à
 - Lien WhatsApp Business dans l'en-tête et en bulle flottante
 
 ## À configurer
-- `WHATSAPP_NUMBER` dans le `<script>` de `index.html` (format international, chiffres uniquement, ex. `32470123456`)
+- `WHATSAPP` dans le `<script>` de `index.html` : le numéro WhatsApp Business de chaque garage (format international, chiffres uniquement, ex. `3223036960`)
 
 - `GARAGES` dans `send.php` : adresse qui reçoit les demandes de chaque garage
 - `FROM_EMAIL` dans `send.php` : adresse d'expédition, à prendre sur le domaine du site (par défaut `noreply@nimanigroup.be`)
